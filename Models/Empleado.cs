@@ -5,39 +5,38 @@ namespace VetTime.Models;
 [Table("Empleados")]
 public class Empleado
 {
-    public int Id { get; set; }
-    public String? Nombre { get; set; }
-    public String? Apellido { get; set; }
-    public String? Mail { get; set; }
-    public String? Pass { get; set; }
-    public String? Telefono { get; set; }
-    public int? Activo { get; set; }
+    public int id { get; set; }
+    public String? nombre { get; set; }
+    public String? apellido { get; set; }
+    public String? mail { get; set; }
+    public String? pass { get; set; }
+    public String? telefono { get; set; }
+    public int? activo { get; set; }
 
-    [ForeignKey(nameof(RolesId))]
-    public int? RolesId { get; set; }
-    [ForeignKey(nameof(EspecialidadesId))]
-    public int? EspecialidadesId { get; set; }
-    [ForeignKey(nameof(SucursalesId))]
-    public int? SucursalesId { get; set; }
-    public Roles? Roles { get; set; }
-    public Especialidades? Especialidades { get; set; }
-    public Sucursales? Sucursales { get; set; }
+    [ForeignKey(nameof(rolId))]
+    public int? rolId { get; set; }
+
+    [ForeignKey(nameof(sucursalId))]
+    public int? sucursalId { get; set; }
+    public Rol? rol { get; set; }
+    public Sucursal? scursal { get; set; }
 
     public Empleado()
     {
 
     }
-    public Empleado(int id, string? nombre, string? apellido, string? mail, string? pass, string? telefono, int? activo, int? rolesId, int? especialidadesId, int? sucursalesId)
+    public Empleado(int id, string? nombre, string? apellido, string? mail, string? pass, string? telefono, int? activo, int? rolId, int? sucursalId, Rol rol, Sucursal scursal)
     {
-        Id = id;
-        Nombre = nombre;
-        Apellido = apellido;
-        Mail = mail;
-        Pass = pass;
-        Telefono = telefono;
-        Activo = activo;
-        RolesId = rolesId;
-        EspecialidadesId = especialidadesId;
-        SucursalesId = sucursalesId;
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.mail = mail;
+        this.pass = pass;
+        this.telefono = telefono;
+        this.activo = activo;
+        this.rolId = rolId;
+        this.sucursalId = sucursalId;
+        this.rol = rol;
+        this.scursal = scursal;
     }
 }
