@@ -8,10 +8,10 @@ public class DataContext : DbContext
     {
 
     }
-    public DbSet<Cliente_mascota> Cliente_Mascotas { get; set; }
+    public DbSet<Cliente_mascota> Clientes_Mascotas { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Consulta> Consultas { get; set; }
-    public DbSet<Empleado_tarea> Empleado_Tareas { get; set; }
+    public DbSet<Empleado_tarea> Empleados_Tareas { get; set; }
     public DbSet<Empleado> Empleados { get; set; }
     public DbSet<Mascota> Mascotas { get; set; }
     public DbSet<Rol> Roles { get; set; }

@@ -66,7 +66,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-builder.WebHost.UseUrls("http://localhost:5200", "http://*:5500", "http://192.168.15.31:5200");
+builder.WebHost.UseUrls("http://localhost:5200", "http://*:5500");//, "http://192.168.15.31:5200"
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
