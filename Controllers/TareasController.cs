@@ -47,7 +47,7 @@ public class TareasController : Controller
 
             List<Empleado> empleados = new List<Empleado>();
             List<Turno> turnos = new List<Turno>();
-            HashSet<TimeSpan> listaHorarios = new HashSet<TimeSpan>();
+
             var buscaTarea = contexto.Empleados_Tareas.Include(x => x.tarea).Where(x => x.tarea.tarea == t.tarea).Include(x => x.empleado).ToList();
             buscaTarea.ForEach(x => empleados.Add(x.empleado));
 
@@ -57,19 +57,23 @@ public class TareasController : Controller
             var property2 = typeof(Turno).GetProperty($"{dia.ToString().ToLower()}_fin");
             var desde = new TimeOnly();
             var hasta = new TimeOnly();
+            HashSet<TimeSpan> listaHorarios = new HashSet<TimeSpan>();
 
             for (int i = 0; i < buscaTurnos.Count; i++)
             {
                 if (property.GetValue(buscaTurnos[i]) != null)
                 {
                     desde = (TimeOnly)property.GetValue(buscaTurnos[i]);
-                    listaHorarios.Add(
-                        new TimeSpan(desde.Hour, desde.Minute, 0)
-                    );
                     hasta = (TimeOnly)property2.GetValue(buscaTurnos[i]);
-                    listaHorarios.Add(
-                        new TimeSpan(hasta.Hour, hasta.Minute, 0)
-                    );
+
+                    TimeSpan intervalo = new TimeSpan(0, 30, 0); // Intervalo de 30 minutos
+
+                    // Agregar intervalos de 30 minutos al HashSet
+                    for (TimeOnly tiempo = desde; tiempo < hasta; tiempo = tiempo.Add(intervalo))
+                    {
+                        listaHorarios.Add(tiempo.ToTimeSpan());
+                    }
+
                 }
             }
 
