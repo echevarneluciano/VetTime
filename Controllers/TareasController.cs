@@ -57,7 +57,7 @@ public class TareasController : Controller
             var property2 = typeof(Turno).GetProperty($"{dia.ToString().ToLower()}_fin");
             var desde = new TimeOnly();
             var hasta = new TimeOnly();
-            HashSet<TimeSpan> listaHorarios = new HashSet<TimeSpan>();
+            List<TimeSpan> listaHorarios = new List<TimeSpan>();
 
             for (int i = 0; i < buscaTurnos.Count; i++)
             {
@@ -76,13 +76,11 @@ public class TareasController : Controller
 
                 }
             }
+        
+            var buscaConsultas = contexto.Consultas.Where(x => empleados.Contains(x.empleado)&&x.tiempoInicio.Value.Date == fechaConvertida.Date).ToList();
 
 
-
-
-
-
-            return Ok(listaHorarios);
+            return Ok(buscaConsultas);
         }
         catch (Exception ex)
         {
