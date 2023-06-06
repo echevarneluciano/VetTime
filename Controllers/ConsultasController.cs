@@ -37,4 +37,19 @@ public class ConsultasController : Controller
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> nuevaConsulta([FromBody] Consulta c)
+    {
+        try
+        {
+            return Ok(contexto.Consultas.Add(c));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
 }
