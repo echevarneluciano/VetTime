@@ -78,9 +78,38 @@ public class TareasController : Controller
             }
         
             var buscaConsultas = contexto.Consultas.Where(x => empleados.Contains(x.empleado)&&x.tiempoInicio.Value.Date == fechaConvertida.Date).ToList();
+            
+            List<TimeSpan> listaHorarios2 = new List<TimeSpan>();
 
+            for (int i = 0; i < buscaConsultas.Count; i++)
+            {
+                if (buscaConsultas[i].tiempoFin.Value != null)
+                {
+                    desde = (TimeOnly)new TimeOnly(buscaConsultas[i].tiempoInicio.Value.Hour, buscaConsultas[i].tiempoInicio.Value.Minute, 0);
+                    hasta = (TimeOnly)new TimeOnly(buscaConsultas[i].tiempoFin.Value.Hour, buscaConsultas[i].tiempoFin.Value.Minute, 0 );
 
-            return Ok(buscaConsultas);
+                    TimeSpan intervalo = new TimeSpan(0, 30, 0); // Intervalo de 30 minutos
+
+                    // Agregar intervalos de 30 minutos al HashSet
+                    for (TimeOnly tiempo = desde; tiempo < hasta; tiempo = tiempo.Add(intervalo))
+                    {
+                        listaHorarios2.Add(tiempo.ToTimeSpan());
+                    }
+
+                }
+            }
+
+            List<TimeSpan> listaHorarios3 = listaHorarios;
+
+            for(int i = 0; i < listaHorarios2.Count; i++)
+            {
+                if(listaHorarios.Contains(listaHorarios2[i]))
+                {
+                    listaHorarios3.Remove(listaHorarios2[i]);
+                }
+            }
+
+            return Ok(listaHorarios3);
         }
         catch (Exception ex)
         {
