@@ -18,5 +18,5 @@ public class DataContext : DbContext
     public DbSet<Sucursal> Sucursales { get; set; }
     public DbSet<Tarea> Tareas { get; set; }
     public DbSet<Turno> Turnos { get; set; }
-
+    
 }
