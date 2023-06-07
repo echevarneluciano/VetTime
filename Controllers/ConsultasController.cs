@@ -52,4 +52,18 @@ public class ConsultasController : Controller
         }
     }
 
+    [HttpPost("turnos/{fecha}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> turnosOcupados([FromBody] Empleado e, string fecha)
+    {
+        try
+        {
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
 }
