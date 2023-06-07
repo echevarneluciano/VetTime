@@ -1,25 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\luciano.echevarne\\Desktop\\UN\\Lab3\\Final\\VetTime\\VetTime.csproj": {}
+    "C:\\Users\\luech\\OneDrive\\Escritorio\\Un\\lab3\\VetTime\\VetTime\\VetTime.csproj": {}
   },
   "projects": {
-    "C:\\Users\\luciano.echevarne\\Desktop\\UN\\Lab3\\Final\\VetTime\\VetTime.csproj": {
+    "C:\\Users\\luech\\OneDrive\\Escritorio\\Un\\lab3\\VetTime\\VetTime\\VetTime.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\luciano.echevarne\\Desktop\\UN\\Lab3\\Final\\VetTime\\VetTime.csproj",
+        "projectUniqueName": "C:\\Users\\luech\\OneDrive\\Escritorio\\Un\\lab3\\VetTime\\VetTime\\VetTime.csproj",
         "projectName": "VetTime",
-        "projectPath": "C:\\Users\\luciano.echevarne\\Desktop\\UN\\Lab3\\Final\\VetTime\\VetTime.csproj",
-        "packagesPath": "C:\\Users\\luciano.echevarne\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\luciano.echevarne\\Desktop\\UN\\Lab3\\Final\\VetTime\\obj\\",
+        "projectPath": "C:\\Users\\luech\\OneDrive\\Escritorio\\Un\\lab3\\VetTime\\VetTime\\VetTime.csproj",
+        "packagesPath": "C:\\Users\\luech\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\luech\\OneDrive\\Escritorio\\Un\\lab3\\VetTime\\VetTime\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\luciano.echevarne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\luech\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -94,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

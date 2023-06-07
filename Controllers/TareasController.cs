@@ -48,7 +48,7 @@ public class TareasController : Controller
             var property2 = typeof(TurnosPorTarea).GetProperty($"{dia.ToString().ToLower()}_fin");
 
             List<TurnosPorTarea> resultList = new List<TurnosPorTarea>();
-
+            Console.WriteLine(dia + " " + fecha);
             using (var command = contexto.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = @$"SELECT {dia.ToString().ToLower()}_ini, {dia.ToString().ToLower()}_fin  FROM turnos  
