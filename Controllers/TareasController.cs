@@ -51,7 +51,7 @@ public class TareasController : Controller
             Console.WriteLine(dia + " " + fecha);
             using (var command = contexto.Database.GetDbConnection().CreateCommand())
             {
-                command.CommandText = @$"SELECT {dia.ToString().ToLower()}_ini, {dia.ToString().ToLower()}_fin  FROM turnos  
+                command.CommandText = @$"SELECT {dia.ToString().ToLower()}_ini, {dia.ToString().ToLower()}_fin, empleados_tareas.empleadoId  FROM turnos  
             JOIN empleados_tareas  ON	turnos.empleadoId = empleados_tareas.empleadoid
             JOIN tareas  ON empleados_tareas.tareaid = tareas.id
             WHERE tareas.tarea = '{t.tarea}'";
@@ -68,6 +68,7 @@ public class TareasController : Controller
                         TimeSpan timeSpan2 = ((TimeSpan)result[1]);
                         valor = TimeOnly.FromDateTime(DateTime.Today.Add(timeSpan2));
                         property2.SetValue(item, valor);
+                        item.empleadoId = (int)result[2];
 
                         resultList.Add(item);
                     }
