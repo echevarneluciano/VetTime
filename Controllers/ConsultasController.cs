@@ -54,11 +54,17 @@ public class ConsultasController : Controller
 
     [HttpPost("turnos/{fecha}")]
     [AllowAnonymous]
-    public async Task<IActionResult> turnosOcupados([FromBody] Empleado e, string fecha)
+    public async Task<IActionResult> turnosOcupados(string fecha)
     {
         try
         {
-            return Ok();
+            DateTime fechaFormateada;
+            DateTime.TryParse(fecha, out fechaFormateada);
+            // DateTime fechaSql = DateTime.ParseExact(fecha, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            // string fechaFormateada = fechaSql.ToString("yyyy-MM-dd");
+            var Consultas = contexto.Consultas.FromSqlInterpolated(@$"select * from consultas where 
+            DATE(tiempoInicio) = {fechaFormateada}").ToList();
+            return Ok(Consultas);
         }
         catch (Exception ex)
         {
