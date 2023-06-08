@@ -38,13 +38,45 @@ public class ConsultasController : Controller
         }
     }
 
-    [HttpPost]
+    [HttpPost("{tarea}")]
     [AllowAnonymous]
-    public async Task<IActionResult> nuevaConsulta([FromBody] Consulta c)
+    public async Task<IActionResult> nuevaConsulta([FromBody] Consulta c, string tarea)
     {
         try
         {
-            return Ok(contexto.Consultas.Add(c));
+            DateTime inicio = (DateTime)c.tiempoInicio;
+            var inicioC = inicio.ToString("yyyy/MM/dd HH:mm:ss");
+            DateTime fin = (DateTime)c.tiempoInicio;
+            var finC = fin.ToString("yyyy/MM/dd HH:mm:ss");
+
+            Consulta item = new Consulta();
+            using (var command = contexto.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = @$"INSERT INTO consultas 
+                (empleadoid, tiempoinicio, tiempofin, cliente_mascotaid, estado, detalle)
+                SELECT e.id, '{inicioC}', '{finC}', {c.cliente_mascotaId}, 1, '{c.detalle}'
+                FROM empleados e JOIN empleados_tareas et ON e.id = et.empleadoId
+                JOIN tareas t ON t.id = et.tareaid
+                WHERE NOT EXISTS (
+                SELECT 1
+                FROM consultas c
+                WHERE c.empleadoid = e.id
+                AND c.tiempoinicio = '{inicioC}')
+                AND t.tarea = '{tarea}'
+                ORDER BY RAND()
+                LIMIT 1;
+                SELECT LAST_INSERT_ID();";
+                contexto.Database.OpenConnection();
+                using (var result = command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        item.id = result.GetInt32(0);
+                    }
+                }
+            }
+            var consultaCreada = contexto.Consultas.Find(item.id);
+            return Ok(consultaCreada);
         }
         catch (Exception ex)
         {
