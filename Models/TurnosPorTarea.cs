@@ -29,6 +29,7 @@ public class TurnosPorTarea
     public Empleado_tarea? empleado_tarea { get; set; }
     public Tarea? tarea { get; set; }
     public int? empleadoId { get; set; }
+    public TimeOnly? tiempoTarea { get; set; }
     public TurnosPorTarea()
     {
 
@@ -37,7 +38,7 @@ public class TurnosPorTarea
     public TurnosPorTarea(int id, TimeOnly monday_ini, TimeOnly monday_fin, TimeOnly tuesday_ini, TimeOnly tuesday_fin,
     TimeOnly wednesday_ini, TimeOnly wednesday_fin, TimeOnly thursday_ini, TimeOnly thursday_fin, TimeOnly friday_ini,
     TimeOnly friday_fin, TimeOnly saturday_ini, TimeOnly saturday_fin, TimeOnly sunday_ini, TimeOnly sunday_fin,
-    int empleados_tareasId, int tareaId, int? activo, Empleado_tarea? empleado_tarea, Tarea? tarea, int? empleadoId)
+    int empleados_tareasId, int tareaId, int? activo, Empleado_tarea? empleado_tarea, Tarea? tarea, int? empleadoId, TimeOnly tiempoTarea)
     {
         this.id = id;
         this.monday_ini = monday_ini;
@@ -60,6 +61,7 @@ public class TurnosPorTarea
         this.empleado_tarea = empleado_tarea;
         this.tarea = tarea;
         this.empleadoId = empleadoId;
+        this.tiempoTarea = tiempoTarea;
     }
 
 }

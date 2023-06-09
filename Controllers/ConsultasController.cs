@@ -46,7 +46,7 @@ public class ConsultasController : Controller
         {
             DateTime inicio = (DateTime)c.tiempoInicio;
             var inicioC = inicio.ToString("yyyy/MM/dd HH:mm:ss");
-            DateTime fin = (DateTime)c.tiempoInicio;
+            DateTime fin = (DateTime)c.tiempoFin;
             var finC = fin.ToString("yyyy/MM/dd HH:mm:ss");
 
             Consulta item = new Consulta();
@@ -84,18 +84,43 @@ public class ConsultasController : Controller
         }
     }
 
-    [HttpPost("turnos/{fecha}")]
+    [HttpGet("turnos/{fecha}/{tarea}")]
     [AllowAnonymous]
-    public async Task<IActionResult> turnosOcupados(string fecha)
+    public async Task<IActionResult> turnosOcupados(string fecha, string tarea)
     {
         try
         {
-            DateTime fechaFormateada;
-            DateTime.TryParse(fecha, out fechaFormateada);
-            // DateTime fechaSql = DateTime.ParseExact(fecha, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            // string fechaFormateada = fechaSql.ToString("yyyy-MM-dd");
-            var Consultas = contexto.Consultas.FromSqlInterpolated(@$"select * from consultas where 
-            DATE(tiempoInicio) = {fechaFormateada}").ToList();
+            string outputFormat = "yyyy-MM-dd";
+            DateTime date = DateTime.ParseExact(fecha, "M-d-yyyy", null);
+            string outputDate = date.ToString(outputFormat);
+
+            List<Consulta> Consultas = new List<Consulta>();
+            using (var command = contexto.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = @$"select c.id, c.tiempoinicio, c.tiempofin, c.cliente_mascotaid, c.estado, c.detalle
+                from consultas c
+                JOIN empleados_tareas et ON c.empleadoid = et.empleadoid	
+                JOIN tareas t ON et.tareaid = t.id
+                where DATE(tiempoInicio) = '{outputDate}'
+                AND	t.tarea = '{tarea}';";
+                contexto.Database.OpenConnection();
+                using (var result = command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        Consulta item = new Consulta();
+                        item.id = result.GetInt32(0);
+                        item.tiempoInicio = result.GetDateTime(1);
+                        item.tiempoFin = result.GetDateTime(2);
+                        item.cliente_mascotaId = result.GetInt32(3);
+                        item.estado = result.GetInt32(4);
+                        item.detalle = result.GetString(5);
+
+                        Consultas.Add(item);
+                    }
+                }
+            }
+
             return Ok(Consultas);
         }
         catch (Exception ex)

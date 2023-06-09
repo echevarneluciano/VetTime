@@ -27,7 +27,7 @@ public class ClientesMascotasController : Controller
     {
         try
         {
-            return Ok(contexto.Clientes_Mascotas.Include(c => c.cliente).Include(c => c.mascota).ToList());
+            return Ok(contexto.Clientes_Mascotas.Include(c => c.cliente).Include(c => c.mascota).ToList().Where(c => c.clienteId == 5));
         }
         catch (Exception ex)
         {
