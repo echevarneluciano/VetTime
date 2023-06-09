@@ -90,10 +90,6 @@ public class ConsultasController : Controller
     {
         try
         {
-            string outputFormat = "yyyy-MM-dd";
-            DateTime date = DateTime.ParseExact(fecha, "M-d-yyyy", null);
-            string outputDate = date.ToString(outputFormat);
-
             List<Consulta> Consultas = new List<Consulta>();
             using (var command = contexto.Database.GetDbConnection().CreateCommand())
             {
@@ -101,7 +97,7 @@ public class ConsultasController : Controller
                 from consultas c
                 JOIN empleados_tareas et ON c.empleadoid = et.empleadoid	
                 JOIN tareas t ON et.tareaid = t.id
-                where DATE(tiempoInicio) = '{outputDate}'
+                where DATE(tiempoInicio) = '{fecha}'
                 AND	t.tarea = '{tarea}';";
                 contexto.Database.OpenConnection();
                 using (var result = command.ExecuteReader())

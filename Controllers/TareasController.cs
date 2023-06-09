@@ -42,8 +42,7 @@ public class TareasController : Controller
     {
         try
         {
-            //var fechaConvertida = DateTime.Parse(fecha);
-            DateTime fechaConvertida = DateTime.ParseExact(fecha, "M-d-yyyy", null);
+            DateTime fechaConvertida = DateTime.Parse(fecha);
             var dia = fechaConvertida.DayOfWeek;
             var property = typeof(TurnosPorTarea).GetProperty($"{dia.ToString().ToLower()}_ini");
             var property2 = typeof(TurnosPorTarea).GetProperty($"{dia.ToString().ToLower()}_fin");
@@ -64,19 +63,23 @@ public class TareasController : Controller
                     while (result.Read())
                     {
                         TurnosPorTarea item = new TurnosPorTarea();
+                        var valor = new TimeOnly();
+                        if (!result.IsDBNull(0))
+                        {
+                            TimeSpan timeSpan = ((TimeSpan)result[0]);
+                            valor = TimeOnly.FromDateTime(DateTime.Today.Add(timeSpan));
+                            property.SetValue(item, valor);
 
-                        TimeSpan timeSpan = ((TimeSpan)result[0]);
-                        var valor = TimeOnly.FromDateTime(DateTime.Today.Add(timeSpan));
-                        property.SetValue(item, valor);
-
-                        TimeSpan timeSpan2 = ((TimeSpan)result[1]);
-                        valor = TimeOnly.FromDateTime(DateTime.Today.Add(timeSpan2));
-                        property2.SetValue(item, valor);
-
-                        item.empleadoId = (int)result[2];
-
-                        TimeSpan timeSpan3 = ((TimeSpan)result[3]);
-                        item.tiempoTarea = TimeOnly.FromDateTime(DateTime.Today.Add(timeSpan3));
+                            item.empleadoId = result.GetInt32(2);
+                            TimeSpan timeSpan3 = ((TimeSpan)result[3]);
+                            item.tiempoTarea = TimeOnly.FromDateTime(DateTime.Today.Add(timeSpan3));
+                        }
+                        if (!result.IsDBNull(1))
+                        {
+                            TimeSpan timeSpan2 = ((TimeSpan)result[1]);
+                            valor = TimeOnly.FromDateTime(DateTime.Today.Add(timeSpan2));
+                            property2.SetValue(item, valor);
+                        }
 
                         resultList.Add(item);
                     }
