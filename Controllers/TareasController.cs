@@ -36,12 +36,15 @@ public class TareasController : Controller
         }
     }
 
-    [HttpPost("turnos/{fecha}")]
+    [HttpGet("turnos/{tarea}/{fecha}/{empleado}")]
     [AllowAnonymous]
-    public async Task<IActionResult> turnosPorTarea([FromBody] Tarea t, string fecha)
+    public async Task<IActionResult> turnosPorTarea(string tarea, string fecha, string empleado)
     {
         try
         {
+            string[] partes = empleado.Split(' ');
+            string nombre = partes[0];
+            string apellido = partes[1];
             DateTime fechaConvertida = DateTime.Parse(fecha);
             var dia = fechaConvertida.DayOfWeek;
             var property = typeof(TurnosPorTarea).GetProperty($"{dia.ToString().ToLower()}_ini");
@@ -55,7 +58,10 @@ public class TareasController : Controller
             empleados_tareas.empleadoId, tareas.tiempo  
             FROM turnos  JOIN empleados_tareas  ON	turnos.empleadoId = empleados_tareas.empleadoid
             JOIN tareas  ON empleados_tareas.tareaid = tareas.id
-            WHERE tareas.tarea = '{t.tarea}'";
+            JOIN empleados ON empleados_tareas.empleadoid = empleados.id
+            WHERE tareas.tarea = '{tarea}'
+            AND empleados.nombre = '{nombre}'
+            AND empleados.apellido = '{apellido}'";
                 contexto.Database.OpenConnection();
 
                 using (var result = command.ExecuteReader())

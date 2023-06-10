@@ -84,21 +84,23 @@ public class ConsultasController : Controller
         }
     }
 
-    [HttpGet("turnos/{fecha}/{tarea}")]
+    [HttpGet("turnos/{fecha}/{empleado}")]
     [AllowAnonymous]
-    public async Task<IActionResult> turnosOcupados(string fecha, string tarea)
+    public async Task<IActionResult> turnosOcupados(string fecha, string empleado)
     {
         try
         {
+            string[] partes = empleado.Split(' ');
+            string nombre = partes[0];
+            string apellido = partes[1];
             List<Consulta> Consultas = new List<Consulta>();
             using (var command = contexto.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = @$"select c.id, c.tiempoinicio, c.tiempofin, c.cliente_mascotaid, c.estado, c.detalle
                 from consultas c
-                JOIN empleados_tareas et ON c.empleadoid = et.empleadoid	
-                JOIN tareas t ON et.tareaid = t.id
+                JOIN empleados e ON e.id = c.empleadoid
                 where DATE(tiempoInicio) = '{fecha}'
-                AND	t.tarea = '{tarea}';";
+                AND	e.nombre = '{nombre}' AND e.apellido = '{apellido}';";
                 contexto.Database.OpenConnection();
                 using (var result = command.ExecuteReader())
                 {
