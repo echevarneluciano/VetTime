@@ -38,12 +38,15 @@ public class ConsultasController : Controller
         }
     }
 
-    [HttpPost("{tarea}")]
+    [HttpPost("{empleado}")]
     [AllowAnonymous]
-    public async Task<IActionResult> nuevaConsulta([FromBody] Consulta c, string tarea)
+    public async Task<IActionResult> nuevaConsulta([FromBody] Consulta c, string empleado)
     {
         try
         {
+            string[] partes = empleado.Split(' ');
+            string nombre = partes[0];
+            string apellido = partes[1];
             DateTime inicio = (DateTime)c.tiempoInicio;
             var inicioC = inicio.ToString("yyyy/MM/dd HH:mm:ss");
             DateTime fin = (DateTime)c.tiempoFin;
@@ -55,16 +58,8 @@ public class ConsultasController : Controller
                 command.CommandText = @$"INSERT INTO consultas 
                 (empleadoid, tiempoinicio, tiempofin, cliente_mascotaid, estado, detalle)
                 SELECT e.id, '{inicioC}', '{finC}', {c.cliente_mascotaId}, 1, '{c.detalle}'
-                FROM empleados e JOIN empleados_tareas et ON e.id = et.empleadoId
-                JOIN tareas t ON t.id = et.tareaid
-                WHERE NOT EXISTS (
-                SELECT 1
-                FROM consultas c
-                WHERE c.empleadoid = e.id
-                AND c.tiempoinicio = '{inicioC}')
-                AND t.tarea = '{tarea}'
-                ORDER BY RAND()
-                LIMIT 1;
+                FROM empleados e
+                WHERE e.nombre = '{nombre}' AND e.apellido = '{apellido}';
                 SELECT LAST_INSERT_ID();";
                 contexto.Database.OpenConnection();
                 using (var result = command.ExecuteReader())
