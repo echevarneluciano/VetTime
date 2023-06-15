@@ -23,7 +23,7 @@ public class TareasController : Controller
 
     // GET: api/<controller>
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<IActionResult> Get()
     {
         try

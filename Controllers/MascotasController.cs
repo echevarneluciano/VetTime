@@ -33,4 +33,28 @@ public class MascotasController : Controller
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> Actualizar([FromBody] Mascota mascota)
+    {
+        try
+        {
+            var mascotaEncontrada = contexto.Mascotas.FirstOrDefault(x => x.id == mascota.id);
+            if (mascotaEncontrada != null)
+            {
+                mascotaEncontrada.nombre = mascota.nombre;
+                mascotaEncontrada.apellido = mascota.apellido;
+                mascotaEncontrada.peso = mascota.peso;
+                mascotaEncontrada.fechaNacimiento = mascota.fechaNacimiento;
+                contexto.Mascotas.Update(mascotaEncontrada);
+                await contexto.SaveChangesAsync();
+            }
+            return Ok(mascotaEncontrada);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

@@ -21,8 +21,8 @@ public class TurnosController : Controller
     }
 
     // GET: api/<controller>
-    [HttpGet]
-    [AllowAnonymous]
+    [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Get()
     {
         try
