@@ -24,7 +24,7 @@ builder.Services.AddCors(options =>
             });
     });
 
-var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
+
 builder.Services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -34,6 +34,33 @@ public class MascotasController : Controller
         }
     }
 
+    [HttpPost("nueva")]
+    [AllowAnonymous]
+    public async Task<IActionResult> nuevaMascota([FromBody] Mascota mascota)
+    {
+        try
+        {
+            var idCliente = 5;
+            var activo = 1;
+            var resultado = contexto.Mascotas.Add(mascota);
+            await contexto.SaveChangesAsync();
+            if (resultado.Entity.id != 0)
+            {
+                contexto.Clientes_Mascotas.Add(new Cliente_mascota { mascotaId = resultado.Entity.id, clienteId = idCliente, activo = activo });
+                await contexto.SaveChangesAsync();
+            }
+            else
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Actualizar([FromBody] Mascota mascota)
