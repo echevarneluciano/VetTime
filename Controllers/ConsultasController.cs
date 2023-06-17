@@ -122,4 +122,34 @@ public class ConsultasController : Controller
         }
     }
 
+    [HttpGet("pendientes")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetPendientes()
+    {
+        try
+        {
+            var pendientes = contexto.Consultas.Where(x => x.estado == 1).Include(x => x.cliente_mascota).ThenInclude(x => x.mascota).ToList();
+            return Ok(pendientes);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet("historial")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetHistorial()
+    {
+        try
+        {
+            var pendientes = contexto.Consultas.Where(x => x.estado == 0).Include(x => x.cliente_mascota).ThenInclude(x => x.mascota).Take(10).ToList();
+            return Ok(pendientes);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
 }
